@@ -1,69 +1,198 @@
-# CodeIgniter 4 Application Starter
+# Aplikasi Pengelolaan Data Kredit Motor Berbasis Web
 
-## What is CodeIgniter?
+Aplikasi ini dikembangkan sebagai bagian dari skripsi jurusan Informatika dengan judul:
+**"RANCANG BANGUN APLIKASI PENGELOLAAN DATA KREDIT MOTOR BERBASIS WEB (STUDI KASUS: PERUSAHAAN FINANCE)"**
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Tujuan Aplikasi
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+Aplikasi ini dirancang untuk menggantikan pencatatan manual data debitur kredit motor (yang sebelumnya menggunakan Excel/kertas) menjadi sistem berbasis web yang lebih terstruktur, mudah dicari, dan mudah dilaporkan.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Fitur Utama
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### 1. Manajemen Data Debitur (CRUD)
+- Tambah data debitur baru
+- Lihat daftar semua debitur
+- Edit data debitur
+- Hapus data debitur
+- Cari debitur berdasarkan nama atau nomor KTP
 
-## Installation & updates
+**Field data debitur:**
+- ID Debitur (auto generate, format: DBT-0001)
+- Nama Lengkap
+- Nomor KTP
+- Alamat
+- Nomor HP
+- Pekerjaan
+- Penghasilan per bulan
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 2. Manajemen Data Motor (CRUD)
+- Tambah data motor
+- Lihat daftar motor
+- Edit data motor
+- Hapus data motor
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+**Field data motor:**
+- ID Motor (auto generate, format: MTR-0001)
+- Merek (contoh: Honda, Yamaha, Suzuki)
+- Tipe (contoh: Beat, Vario, NMAX)
+- Tahun
+- Warna
+- Harga OTR (On The Road)
 
-## Setup
+### 3. Manajemen Data Kontrak Kredit (CRUD)
+- Buat kontrak baru (menghubungkan debitur dengan motor)
+- Lihat daftar kontrak
+- Edit kontrak
+- Hapus kontrak
+- Cari kontrak berdasarkan nama debitur atau nomor kontrak
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+**Field data kontrak:**
+- Nomor Kontrak (auto generate, format: KTR-20250001)
+- Pilih Debitur (dropdown dari data debitur)
+- Pilih Motor (dropdown dari data motor)
+- Tenor (pilihan: 12 bulan, 18 bulan, 24 bulan, 36 bulan)
+- Uang Muka (DP) dalam Rupiah
+- Jumlah Pinjaman (harga motor - DP)
+- Bunga per tahun (%) (input manual)
+- Total Angsuran per bulan (otomatis dihitung: [Jumlah Pinjaman + (Jumlah Pinjaman * Bunga/100)] / Tenor)
+- Tanggal Mulai Kontrak
+- Tanggal Selesai Kontrak (otomatis + tenor dari tanggal mulai)
 
-## Important Change with index.php
+### 4. Laporan Sederhana
+- Laporan semua debitur (bisa di-print atau export ke PDF)
+- Laporan semua kontrak aktif (status: masih dalam masa angsuran)
+- Laporan semua kontrak selesai (status: sudah lunas)
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+### 5. Autentikasi Pengguna
+- Halaman login (username dan password)
+- Role: Admin
+- Logout
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Teknologi yang Digunakan
 
-**Please** read the user guide for a better explanation of how CI4 works!
+- **Backend Framework:** CodeIgniter 4
+- **Frontend:** Bootstrap 5
+- **Database:** MySQL / MariaDB
+- **Library Tambahan:**
+  - Dompdf (untuk export PDF laporan)
+  - SweetAlert (untuk notifikasi popup)
+  - DataTables (untuk tabel yang bisa di-search dan di-sort)
 
-## Repository Management
+## Struktur Database
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Aplikasi menggunakan 4 tabel utama:
+- `users` - untuk autentikasi admin
+- `debitur` - menyimpan data debitur
+- `motor` - menyimpan data motor
+- `kontrak` - menyimpan data kontrak kredit dengan relasi ke debitur dan motor
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## Cara Setup
 
-## Server Requirements
+### Prasyarat
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+- PHP 8.2 atau lebih tinggi
+- MySQL / MariaDB
+- Composer
+- Web server (Apache/Nginx)
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+### Langkah-langkah Instalasi
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Bernatd-ST/PENGELOLAAN-DATA-KREDIT-MOTOR-BERBASIS-WEB.git
+   cd PENGELOLAAN-DATA-KREDIT-MOTOR-BERBASIS-WEB
+   ```
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+2. **Install dependencies**
+   ```bash
+   composer install
+   ```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+3. **Konfigurasi environment**
+   ```bash
+   cp env .env
+   ```
+
+4. **Edit file `.env`**
+   Buka file `.env` dan sesuaikan konfigurasi berikut:
+   ```ini
+   app.baseURL = 'http://localhost:8080/'
+   
+   database.default.hostname = localhost
+   database.default.database = nama_database
+   database.default.username = username_mysql
+   database.default.password = password_mysql
+   database.default.DBDriver = MySQLi
+   ```
+
+5. **Import database**
+   - Buat database baru di MySQL sesuai dengan nama yang diatur di `.env`
+   - Import file `setup_db.sql` ke database yang telah dibuat:
+   ```bash
+   mysql -u username -p nama_database < setup_db.sql
+   ```
+
+6. **Jalankan aplikasi**
+   ```bash
+   php spark serve
+   ```
+
+7. **Akses aplikasi**
+   Buka browser dan kunjungi: `http://localhost:8080`
+
+### Login Default
+
+- **Username:** admin
+- **Password:** admin123
+
+> **Catatan:** Silakan ubah password default setelah login pertama untuk keamanan.
+
+## Struktur Folder Proyek
+
+```
+kredit_motor/
+├── app/
+│   ├── Config/          # Konfigurasi aplikasi
+│   ├── Controllers/     # Controller untuk setiap fitur
+│   ├── Models/          # Model database
+│   ├── Views/           # View/template halaman
+│   ├── Filters/         # Filter untuk autentikasi
+│   ├── Helpers/         # Helper functions
+│   └── Libraries/       # Custom libraries
+├── public/              # Folder publik (index.php, assets)
+├── writable/            # Folder untuk cache, logs, uploads
+├── tests/               # Unit tests
+├── setup_db.sql         # SQL untuk setup database
+├── composer.json        # Dependencies PHP
+├── env                  # Template environment
+└── spark                # CLI tool CodeIgniter
+```
+
+## Halaman-halaman Aplikasi
+
+1. **Halaman Login** - Autentikasi admin
+2. **Dashboard** - Statistik ringkas (total debitur, motor, kontrak aktif)
+3. **Manajemen Debitur** - CRUD data debitur
+4. **Manajemen Motor** - CRUD data motor
+5. **Manajemen Kontrak** - CRUD kontrak kredit dengan perhitungan otomatis
+6. **Laporan** - Laporan debitur dan kontrak dengan export PDF
+
+## Developer
+
+Dikembangkan oleh:
+- Bernatd-ST
+- Jurusan Informatika
+
+## Lisensi
+
+Lisensi tersedia di file [LICENSE](LICENSE)
+
+## Catatan Penting
+
+Aplikasi ini dikembangkan untuk keperluan skripsi dan mencakup fitur-fitur minimum viable product (MVP). Beberapa fitur yang tidak disertakan:
+- Notifikasi WhatsApp/SMS/Email
+- Sistem pembayaran angsuran (cukup kontrak saja)
+- Role user yang rumit (cukup admin saja)
+- Fitur reset password
+- API atau integrasi dengan sistem lain
+- Hosting atau deployment (didesain untuk penggunaan lokal)
