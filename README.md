@@ -180,7 +180,7 @@ kredit_motor/
 ## Developer
 
 Dikembangkan oleh:
-- Bernatd-ST
+- Andry Situmeang
 - Jurusan Informatika
 
 ## Lisensi
